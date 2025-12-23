@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYDRA BOTS | Elevando o nível do seu servidor</title>
+    <meta name="description" content="Compre bots, sites e designs ou junte-se à equipe Hydra Bots.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. RESET E VARIÁVEIS GERAIS
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050505; /* Preto quase absoluto */
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Evita scroll horizontal */
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+            -webkit-font-smoothing: antialiased; /* Renderização de fonte mais nítida */
+        }
+
+        /* =========================================
+           2. CANVAS (BACKGROUND)
+           ========================================= */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Garante que fique atrás de tudo */
+            pointer-events: none; /* Não interfere em cliques */
+        }
+
+        /* =========================================
+           3. ESTRUTURA E LAYOUT
+           ========================================= */
+        main {
+            position: relative;
+            z-index: 1; /* Camada superior ao canvas */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+            
+            /* Animação de entrada */
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); }
+        }
+
+        /* =========================================
+           4. COMPONENTES VISUAIS
+           ========================================= */
+        
+        /* LOGO */
+        .logo-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .logo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            /* Glow branco suave */
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+        }
+
+        /* TÍTULO */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        /* LINHA DECORATIVA */
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            margin: 0 auto 2rem auto;
+            opacity: 0.8;
+        }
+
+        /* TEXTO DESCRITIVO */
+        .description {
+            max-width: 600px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #b0b0b0; /* Cinza claro para leitura confortável */
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .description p {
+            margin-bottom: 1rem;
+        }
+
+        /* BOTÃO CTA */
+        .btn-discord {
+            display: inline-block;
+            padding: 14px 32px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            text-decoration: none;
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 4px; /* Leve arredondamento moderno */
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-discord:hover {
+            background-color: #fff;
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-discord:active {
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           5. RESPONSIVIDADE
+           ========================================= */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+                letter-spacing: 0.2em;
+            }
+            
+            .logo {
+                width: 110px;
+                height: 110px;
+            }
+
+            .description {
+                font-size: 0.95rem;
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="starfield"></canvas>
+
+    <main>
+        
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/LsznWytL/20251220231118246.webp" 
+                 alt="Logo Hydra Bots" 
+                 class="logo">
+        </div>
+
+        <header>
+            <h1>Hydra Bots</h1>
+            <div class="divider"></div>
+        </header>
+
+        <section class="description">
+            <p>
+                Quer elevar o nível do seu servidor?
+            </p>
+            <p>
+                Conheça a <strong>Hydra Bots</strong> — aqui você pode comprar bots, sites e designs,
+                ou até se juntar à equipe e vender seus próprios serviços.
+            </p>
+            <p>
+                Também temos chats ativos sobre programação, automações
+                e inteligência artificial.<br>
+                Entre, converse, aprenda e construa junto com a gente.
+            </p>
+        </section>
+
+        <footer>
+            <a href="https://discord.gg/wXzeZPnrSZ" target="_blank" rel="noopener noreferrer" class="btn-discord">
+                Entrar no Discord
+            </a>
+        </footer>
+
+    </main>
+
+    <script>
+        /**
+         * HYDRA BOTS - STARFIELD ENGINE
+         * Foco: Performance (60fps), Sem bugs visuais, Responsivo.
+         */
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let stars = [];
+        let shootingStars = [];
+        
+        // Configurações
+        const STAR_COUNT_DESKTOP = 150;
+        const STAR_COUNT_MOBILE = 60;
+        const SHOOTING_STAR_FREQUENCY = 0.015; // Probabilidade por frame
+
+        // Utilitários
+        const random = (min, max) => Math.random() * (max - min) + min;
+
+        // Ajusta tamanho do canvas
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            initStars(); // Recria estrelas ao redimensionar para melhor distribuição
+        }
+
+        // Classe: Estrela Estática (com brilho/cintilação)
+        class Star {
+            constructor() {
+                this.x = random(0, width);
+                this.y = random(0, height);
+                this.size = random(0.5, 2);
+                this.opacity = random(0.1, 0.8);
+                this.flickerSpeed = random(0.005, 0.02);
+                this.direction = Math.random() > 0.5 ? 1 : -1;
+            }
+
+            update() {
+                // Efeito de cintilação suave
+                this.opacity += this.flickerSpeed * this.direction;
+                if (this.opacity > 0.9 || this.opacity < 0.2) {
+                    this.direction *= -1;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Classe: Estrela Cadente
+        class ShootingStar {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = random(0, width);
+                this.y = random(0, height / 2); // Começa na metade superior
+                this.length = random(100, 200);
+                this.speed = random(6, 12);
+                this.size = random(0.5, 1.5);
+                // Ângulo diagonal (movendo para baixo/direita ou baixo/esquerda)
+                this.angle = Math.PI / 4; // 45 graus (padrão)
+                
+                // Começa fora da tela para entrar suavemente
+                this.x = random(-100, width);
+                this.y = random(-100, 0);
+                
+                this.active = true;
+            }
+
+            update() {
+                this.x += this.speed * Math.cos(this.angle);
+                this.y += this.speed * Math.sin(this.angle);
+
+                // Se sair da tela, desativa
+                if (this.x > width + this.length || this.y > height + this.length) {
+                    this.active = false;
+                }
+            }
+
+            draw() {
+                if (!this.active) return;
+
+                // Cria rastro gradiente (cabeça branca, cauda transparente)
+                const tailX = this.x - this.length * Math.cos(this.angle);
+                const tailY = this.y - this.length * Math.sin(this.angle);
+
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+                gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.size;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+            }
+        }
+
+        // Inicializa estrelas estáticas
+        function initStars() {
+            stars = [];
+            const count = width < 768 ? STAR_COUNT_MOBILE : STAR_COUNT_DESKTOP;
+            for (let i = 0; i < count; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        // Loop principal de animação
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // 1. Desenha Estrelas Estáticas
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            // 2. Lógica das Estrelas Cadentes
+            // Chance aleatória de nascer uma nova
+            if (Math.random() < SHOOTING_STAR_FREQUENCY) {
+                shootingStars.push(new ShootingStar());
+            }
+
+            // Atualiza e desenha cadentes
+            // Remove as inativas do array para economizar memória
+            shootingStars = shootingStars.filter(star => star.active);
+            shootingStars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // Event Listeners
+        window.addEventListener('resize', resize);
+        
+        // Iniciar
+        resize();
+        animate();
+    </script>
+</body>
+</html>
